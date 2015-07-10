@@ -1,12 +1,32 @@
-h1 Welcome to Harp.
-h3 This is yours to own. Enjoy.
-p It is a problem!  Lorem i
+.container
+  .row
+    .col-md-3
+      h3 public
+      ul
+        for post in public.post._contents
+          li
+            a(href="/post/#{post}") #{post}
 
-hr
+    .col-md-3
+      h3 study
+      ul
+        for study in public.study._contents
+          li
+            a(href="/study/#{study}") #{study}
 
-div  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, quos?
 
-div welcome to my website:
-  a(href="http://www.ananfo.com") ananfo.com
+    .col-md-3
+      h3 demo
+      ul
+        for demo in public.demo._contents
+          li
+            a(href="/demo/#{demo}") #{demo}
+        li
+          a(href="/demo/editline") editline
 
-p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam eaque ipsam eum maxime consequatur voluptates ex rem explicabo magni, repellendus id aperiam nesciunt, delectus cum enim vero deserunt quos odio. Minima dolor eaque, neque fuga, magni deleniti excepturi pariatur architecto delectus beatae quisquam doloremque assumenda corporis quae voluptatibus at molestiae in voluptas nihil esse. Non assumenda blanditiis odio molestiae numquam reiciendis dicta incidunt modi voluptates. Atque, ad amet iure laudantium fugit culpa optio laborum nesciunt veritatis quos vel, veniam beatae distinctio, reiciendis rerum itaque? Inventore ipsum, laudantium, voluptas excepturi commodi laborum laboriosam esse magnam aspernatur explicabo maxime culpa unde id!
+    .col-md-3
+      h3 photo
+      ul
+        for photo in public.photo._contents
+          li
+            a(href="/photo/#{photo}") #{photo}
