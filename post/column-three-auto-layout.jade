@@ -69,3 +69,19 @@
             background:green;
     p 这种方法看似完美，也有很多问题。用了table-row属性值，则会无视宽度。也就是说当列内容少于一行时整个row会按照实际宽度显示。
 
+    hr
+    p 写这篇博文时发现了一个更为强大的css3布局方案，现代浏览器都支持（IE10+）。那就是使用 Flex布局方案。
+    h5 sass代码如下：（参见第五种实现方法）
+    pre.
+      .flex
+        display: flex;justify-content:space-between;
+        .left
+          background:yellow; order:1; flex-basis:200px;flex-shrink:0;
+        .right
+          background:red;order:3; flex-basis:200px;flex-shrink:0;
+        .center
+          background:pink; margin:0 20px;flex-basis:auto;order:2;
+    p 参考资料：
+    ul
+      li
+        a(href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html") Flex 布局语法教程
