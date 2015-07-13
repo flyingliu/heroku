@@ -1,0 +1,71 @@
+.container
+  .row
+
+    h1 关于css布局页面的问题
+    hr
+    p 问：用多种方法实现左右定宽中间自适用的三列布局。
+    p
+      a(href="/demo/layout.html") 三列布局demo.
+    p 碰到这个问题还真没去穷究过。再次总结，又发现了不少问题。我以前用的最常规的办法就是左右使用绝对定位，脱离文档流，中间列使用margin外边距。
+    h5 sass代码如下：
+    pre.
+      .main 
+        background:#ccc; position: relative; overflow:hidden;
+        .left
+          width:200px;background:yellow; position: absolute; left:0;top:0;
+        .right
+          width:200px;background:red;position: absolute; right:0; top:0;
+        .center
+          margin:0 220px;background:green;
+    p 这种布局还算比较优雅，左中右可以任意调换位置，兼容性能也比较好，就是如果要实现三栏等高之类的就要用到js了。还有就是脱离了文档流，内容如果多出中间高度会显现隐藏之类的隐患。见demo中第一种方案。
+
+    hr
+    p 利用元素的BFC特性实现自适应布局
+    p <strong>BFC(Block formatting contexts)</strong>:浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）。
+    h5 sass代码如下：（参见第二种实现方法）
+    pre.
+      .line
+        background:#ccc;
+        .left
+          width:200px;background:yellow; float:left;margin-right:20px; 
+        .right
+          width:200px;background:red; float:right;margin-left:20px;
+        .center
+          display:table-cell; background:green;
+    p 参考资料：
+    ul
+      li
+        a(href="http://www.w3cplus.com/css/understanding-bfc-and-margin-collapse.html") 深入理解BFC和Margin Collapse
+      li
+        a(href="http://www.zhangxinxu.com/wordpress/2015/02/css-deep-understand-flow-bfc-column-two-auto-layout/") CSS深入理解流体特性和BFC特性下多栏自适应布局
+
+    hr
+    p 实在不行，就用table来布局吧，如果不考虑语义化，想要实现如题中的三列布局太容易了。还能兼容到IE6。三列等高，上下居中都能分分钟实现。缺点就是不太符合潮流了，表格在浏览器适配布局上也会存在诸多限制。
+    h5 sass代码如下：（参见第三种实现方法）
+    pre.
+      .tablea
+        background:#ccc;width:100%;
+        td
+          padding:0;vertical-align:top;
+        .left
+          width:200px;background:yellow;
+        .right
+          width:200px;background:red; 
+        .center
+          background:#ccc; padding:0 20px;
+    hr
+    p OK，时代在进步，我们是否可以考虑丢掉对IE6/7的适配了！就用dispaly中的table相关属性来显示吧。去table元素而能有table的属性。
+    h5 sass代码如下：（参见第四种实现方法）
+    pre.
+      .ta
+        display:table-row;
+        .left
+          width:200px;background:yellow; display:table-cell;
+        .right
+          width:200px;background:red;  display:table-cell;
+        .center
+          background:#ccc; display:table-cell;padding:0 20px;
+          div
+            background:green;
+    p 这种方法看似完美，也有很多问题。用了table-row属性值，则会无视宽度。也就是说当列内容少于一行时整个row会按照实际宽度显示。
+
