@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title 闭包与事件代理
+  body
+    h3 点击下面的列表项目，并且显示当前项
+    ul#ul
+      li 1 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, dolores!
+      li 2 Lorem ipsum dolor sit amet.
+      li 3 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      li 4 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, dolores!
+      li 5 Lorem ipsum dolor sit elit. Vitae, dolores!
+      li 6 Lorem ipsum adipisicing elit. Vitae, dolores!
+
+    script.
+      window.onload = function(){
+        //用闭包法实现。
+        var lis = document.querySelectorAll('#ul > li');
+        for (var i=0,len=lis.length;i<len;i++) {
+          (function(i){
+            lis[i].onclick = function () {
+              console.log(i + ':');
+              console.log(lis[i]);
+            }
+          })(i)
+        }
+        //用事件代理实现
+        function getEventTarget(e) {
+          e = e || window.event;
+          return e.target || e.srcElement;
+        }
+
+        function editCell(e) {
+          var target = getEventTarget(e);
+          if(target.tagName.toLowerCase() === 'li') {
+            console.log(target);
+          }
+        }
+
+        var ul = document.querySelector('#ul');
+        ul.onclick = editCell;
+
+      }

@@ -1,0 +1,48 @@
+.container
+  .row
+
+    h1 js事件代理（event delegation）与闭包
+    p 
+      a(href="/demo/bibao") 本文的demo
+    p 如题：点击一个列表对象，打印出相对应的索引值与内容。
+    p 碰到这个问题最先想到的是一个闭包问题。
+    h5 js代码如下：
+    pre.
+      var lis = document.querySelectorAll('#ul &gt; li');
+      for (var i=0,len=lis.length;i &lt; len;i++) {
+        (function(i){
+          lis[i].onclick = function () {
+            console.log(i + ':');
+            console.log(lis[i]);
+          }
+        })(i)
+      }
+    p 这个解决办法不好的地方就是有N个函数常驻内存了。简言之，闭包是产生一个没有被释放资源的栈区。换言之，就是一个不可控的内存空间占用，如果与事件相关联，JS的垃圾回收机制也不会去触碰该区域。 
+    h3 其实利用事件代理与冒泡也是能比较好的解决这个问题的。
+    h5 js代码如下：
+    pre.
+        //用事件代理实现
+        function getEventTarget(e) {
+          e = e || window.event;
+          return e.target || e.srcElement;
+        }
+
+        function editCell(e) {
+          var target = getEventTarget(e);
+          if(target.tagName.toLowerCase() === 'li') {
+            console.log(target);
+          }
+        }
+
+        var ul = document.querySelector('#ul');
+        ul.onclick = editCell;
+    h5 JavaScript事件代理带来的好处有：
+    ul
+      li 那些需要创建的以及驻留在内存中的事件处理器少了。这是很重要的一点，我们得到了性能上的提升，同时降低了崩溃的风险。
+      li 在DOM更新后无须重新绑定事件处理器了。如果你的页面是动态生成的，比如说通过Ajax，你不需要再在元素被载入或者卸载的时候来添加或者删除事件处理器了。
+    p 潜在的问题也许并不那么明显，但是一旦你注意到这些问题，你就可以轻松地避免它们：
+    ul
+      li 你的事件管理代码有成为性能瓶颈的风险，所以尽量使它能够短小精悍。
+      li 不是所有的事件都能冒泡的。blur、focus、load和unload不能像其它事件一样冒泡。事实上blur和focus可以用事件捕获而非事件冒泡的方法获得（在非IE的浏览器中），不过我们改天再说这个吧。
+      li 在管理鼠标事件的时候有些需要注意的地方。如果你的代码处理mousemove事件的话你遇上性能瓶颈的风险可就大了，因为mousemove事件触发得非常频繁。而mouseout则因为其怪异的表现而变得很难用事件代理来管理。
+
