@@ -1,0 +1,37 @@
+.container
+  .rorw
+    .col-md-12
+
+      h1 任意字符转换成HTML识别格式与JS识别格式
+      hr
+
+      form.form-inline#form(onsubmit="return false")
+        input.form-control(type="text" id="input" placeholder="请输入任意字符" maxlength="1" name="q" required autofocus)
+        span &ensp;
+        input.btn.btn-primary(type='submit')
+      hr
+      h5 HTML识别格式
+      div#show
+      hr
+      h5 JS识别格式(Unicode编码)
+      div#jsshow
+
+script.
+  //这个函数参考地址：www.zhangxinxu.com/sp/char.html
+  var U = function(a, b) {
+    if (!a) return "";
+    for (var b = b || "x", c = "", d = 0, e; d < a.length; d += 1) a.charCodeAt(d) >= 55296 && a.charCodeAt(d) <= 56319 ? (e = (65536 + 1024 * (Number(a.charCodeAt(d)) - 55296) + Number(a.charCodeAt(d + 1)) - 56320).toString(16), d += 1) : e = a.charCodeAt(d).toString(16),
+
+    c += b + e;
+    return c.substr(b.length)
+  }
+  var $ = function(id) {
+    return document.getElementById(id);
+  }
+  $("form").onsubmit = function() {
+    var val = $("input").value, char = U(val);
+    $("show").innerHTML = "&#x" + char + "; → " + "&amp;#x" + char + ";";
+    $("jsshow").innerHTML = "&#x" + char + "; → " + val.charCodeAt(0);
+
+    return false;
+  };
