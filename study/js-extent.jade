@@ -1,0 +1,79 @@
+h1 JS里面向对象中的继承
+
+p 先看代码
+
+pre.
+  function Father (name,age) {
+    this.name = name;
+    this.age  = age;
+  }
+
+  Father.prototype.showname = function() {
+    console.log('my name is ' + this.name);
+  }
+
+  Father.prototype.showage = function() {
+    console.log('my age is ' + this.age);
+  }
+
+  function Child(name,age,job) {
+    //构造函数伪装，继承父级属性
+    Father.call(this,name,age);
+    this.job = job;
+  }
+
+  //- 继承父级方法 -- 子级引用父级的方法。这种应用法会使子级方法同时赋给父级
+  //- Child.prototype = Father.prototype;
+
+  //- 重新给复制方法给子级
+  for ( var i in Father.prototype) {
+    Child.prototype[i] = Father.prototype[i];
+  }
+
+
+  Child.prototype.showjob = function() {
+    console.log('my job is ' + this.job);
+  }
+
+  var p1 = new Child('fly','18','web design');
+  p1.showjob();
+
+
+
+
+script.
+  function Father (name,age) {
+    this.name = name;
+    this.age  = age;
+  }
+
+  Father.prototype.showname = function() {
+    console.log('my name is ' + this.name);
+  }
+
+  Father.prototype.showage = function() {
+    console.log('my age is ' + this.age);
+  }
+
+  function Child(name,age,job) {
+    //构造函数伪装，继承父级属性
+    Father.call(this,name,age);
+    this.job = job;
+  }
+
+  //- 继承父级方法 -- 子级引用父级的方法。这种应用法会使子级方法同时赋给父级
+  //- Child.prototype = Father.prototype;
+
+  //- 重新给复制方法给子级
+  for ( var i in Father.prototype) {
+    Child.prototype[i] = Father.prototype[i];
+  }
+
+
+  Child.prototype.showjob = function() {
+    console.log('my job is ' + this.job);
+  }
+
+  var p1 = new Child('fly','18','web design');
+  p1.showjob();
+
