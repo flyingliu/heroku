@@ -1,0 +1,46 @@
+.container
+  .row
+    .col-md-12
+      form.form-inline
+        label(for="input")
+          input#input(type="checkbox")
+          span 点击这里试试看
+
+
+script.
+  //是否存在指定函数 
+  function isExitsFunction(funcName) {
+    try {
+      if (typeof(eval(funcName)) == "function") {
+          return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+  //是否存在指定变量
+  function isExitsVariable(variableName) {
+    try {
+      if (typeof(variableName) == "undefined") {
+        return false;
+      } else {
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  //label 重复执行的坑
+  var evTimeStamp = 0;
+  function isDbClick(e) {
+    var now = +new Date();
+    if (now - evTimeStamp < 100) {
+      return;
+    }
+    evTimeStamp = now;
+    console.log(evTimeStamp);
+  };
+
+
+  var label = document.querySelectorAll('label')[0]
+  label.onclick = isDbClick;
+  console.log(label);
