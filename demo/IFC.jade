@@ -1,0 +1,45 @@
+link(rel="stylesheet", href="/asset/css/IFC.css")
+
+.container
+  hr
+  .row
+    .col-md-12
+      h1 水平垂直居中显示
+      hr
+      .wrap
+        .span 这是 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, ipsum.
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, voluptatum? Unde consequatur soluta harum architecto. Laborum culpa quas, est optio.
+
+      h5 scss代码如下：
+      pre.
+        .wrap { height:500px;width:500px; background:gray;text-align: center;
+          &:after {content:'';height:100%;width:0;display:inline-block;margin-left:-5px;font-size:0;*display:inline;*zoom:1;vertical-align:middle; }
+          .span {display:inline-block;vertical-align:middle; background:pink;width:200px;}
+        }
+
+
+  hr
+  .row
+    .col-md-12
+      .box
+        .con  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique alias sunt quis voluptate unde, reprehenderit.
+        .con  Similique alias sunt quis voluptate unde, reprehenderit.
+      h5 scss代码如下：
+      pre.
+        .box {height:300px;width:500px; background:yellow; display:table-cell; text-align: center;vertical-align: middle; 
+          .con { display:inline-block;width:100px;background:black; margin:20px; vertical-align: middle; }
+        }
+
+  hr
+  .row
+    .col-md-12
+      .boxa
+        .con  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique alias sunt quis voluptate unde, reprehenderit.
+      h5 scss代码如下：
+      pre.
+        .boxa {height:300px;width:500px; background:yellow; position: relative; 
+          .con { transform:translate3d(-50%, -50%, 0); background:black;position: absolute; width:200px; top:50%;left:50%; }
+        }
+
+
+

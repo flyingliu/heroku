@@ -45,6 +45,9 @@ script.
   function Father (name,age) {
     this.name = name;
     this.age  = age;
+    this.say  = function(){
+      console.log('Father ' + this.name );
+    }
   }
 
   Father.prototype.showname = function() {
@@ -75,5 +78,5 @@ script.
   }
 
   var p1 = new Child('fly','18','web design');
-  p1.showjob();
+  p1.say();
 
