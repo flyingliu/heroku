@@ -1,0 +1,205 @@
+.container
+  .row
+
+    h1 高性能JavaScript
+
+    p 据说以下内容来自《高性能javascript》。先是依葫芦画瓢吧。
+
+    ol
+      li
+        h3 避免双重求值。
+        p JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态执行它。当你在JavaScript代码中执行另一段JavaScript代码时，都会导致双重求值的性能消耗，此代码首先会以正常的方式求值，然后在执行过程中对包含于字符串中的代码发起另一个求值运算。所以，大多数时候没必要使用eval()和Function()，就避免使用它们；至于setTimeout和setInterval，建议传入函数而不是字符串来作为第一个参数。
+        pre.
+            //not use this
+            setTimeout('console.log("hello world")', 1000);
+            // use this
+            setTimeout(function() {
+              console.log('hello world');
+            }, 1000);
+      li
+        h3 使用Object/Array直接量
+        pre.
+          // use this
+          var obj = {
+            name: 'hanzichi',
+            age: 10
+          };
+
+          var arr = [0, 1, 2, 3];
+
+          // not use this
+          var obj = new Object();
+          obj.name = 'hanzichi';
+          obj.age = 10;
+
+          var arr = new Array();
+          arr[0] = 0;
+          arr[1] = 1;
+          arr[2] = 2;
+          arr[3] = 3;
+        li
+          h3.text-info 不要重复工作
+          p 不要重复工作是一种重要的思想。JS要不断积累一些优秀的代码。最后达到一个库，最后成为一个框架！
+          p eg:考虑一个添加事件处理器的例子，典型的跨浏览器代码写法如下：
+          pre.
+            function addHandler(target, eventType, handler) {
+              if (target.addEventListener) {  // DOM2 Events
+                target.addEventListener(eventType, handler, false);
+              } else {  // IE
+                target.attachEvent('on' + eventType, handler);
+              }
+            }
+
+            addHandler(document, 'click', function() {
+              console.log('hello world');
+            });
+
+          p 但是如果一个页面调用了好多次addHandler函数添加事件，每次都会去做浏览器的判断，但是事实是每次的判断结果都是一样的，因为浏览器并不会变化，这时我们就可以针对“不要重复工作”做一个优化策略。
+
+          h4.text-warning
+            strong 延迟加载
+          p 延迟加载，也称惰性加载，惰性载入等。 延迟加载意味着在信息被使用前不会做任何操作 ：
+          pre.
+            function addHandler(target, eventType, handler) {
+              if (target.addEventListener) {  // DOM2 Events
+                addHandler = function(target, eventType, handler) {
+                  target.addEventListener(eventType, handler, false);
+                };
+              } else {  // IE
+                addHandler = function(target, eventType, handler) {
+                  target.attachEvent('on' + eventType, handler);
+                };
+              }
+              addHandler(target, eventType, handler);
+            }
+
+            // 调用
+            addHandler(document, 'click', function() {
+              console.log('hello world');
+            });
+
+            addHandler(window, 'keydown', function() {
+              console.log('key down');
+            });
+          p 方法在第一次被调用时，会先检查并决定使用哪种方法去绑定事件处理器，然后原始函数被包含正确操作的新函数覆盖。最后一步调用新的函数（也可以直接return 新的函数），并传入原始参数。之后的每次调用addHandler()都不会再做检测，因为检测代码已经被新的函数覆盖。
+
+          p 调用延迟加载函数时，第一次总会消耗较长的时间，因为它必须运行检测接着再调用另一个函数完成任务，但随后调用函数会变快，因为不需要再进行检测。当一个函数在页面中不会立即调用时，延迟加载是最好的选择。
+
+          h4.text-warning
+            strong 条件预加载
+          p 条件预加载会在脚本加载期间提前检测，而不会等到函数被调用：
+          pre.
+            var addHandler = document.addEventListener ?
+              function(target, eventType, handler) {
+                target.addEventListener(eventType, handler, false);
+              }:
+              function(target, eventType, handler) {
+                target.attachEvent('on' + eventType, handler);
+              };
+
+            // 调用
+            addHandler(document, 'click', function() {
+              console.log('hello world');
+            });
+
+            addHandler(window, 'keydown', function() {
+              console.log('key down');
+            });
+          p 条件预加载确保所有函数消耗的时间相同，其代价是需要在脚本加载时就检测，而不是加载后。预加载适用于一个函数马上就要被用到，并且在整个页面的生命周期中频繁出现的场合。
+
+          p 常见的“不要重复工作”还有做ajax时候的浏览器探测，自己可以思考下写写代码。
+
+        li
+          h3 使用速度快的部分
+          p
+            strong 位运算,
+            | 用位运算加速大家都应该熟悉并且熟练掌握：
+          pre.
+            // use &1 instead of %2
+            var a = 10;
+            if (a & 1) {  // use this
+              // ...
+            }
+
+            if (a % 2) { // not use this
+              // ...
+            }
+
+            // use << 1 instead of *2
+            var a = 10;
+            var b = a << 1; // use this
+            var b = a * 2;  // not use this
+
+            var a = 10;
+            var b = a >> 1; // use this
+            var b = a / 2;  // not use this
+          p
+            strong 原生方法
+          p 无论你的JavaScript代码如何优化，都永远不会比JavaScript引擎提供的原生方法更快，因为JavaScript原生部分在你写代码前就已经存在在浏览器中了，并且都是用底层语言写的，诸如C++。这意味着这些方法会被编译成机器码，成为浏览器的一部分。所以尽量用一些内置的函数或者常量，比如Math对象提供的：
+          p 另外一个例子是选择器API，它允许使用CSS选择器来查找DOM节点。CSS查询被JavaScript原生支持并被JQuery发扬光大。JQuery引擎被广泛认为是最快的CSS查询引擎，但是它仍然比原生方法慢。原生的querySelector()和querySelectorAll()方法完成任务平均所需时间是基于JavaScript的CSS查询的10%。所以当原生方法可用时，尽量使用它们。特别是数学运算和DOM操作，用编译后的代码做更多的事情，你的代码就会越快。
+
+
+    script.
+      //not use this
+      setTimeout('console.log("hello world 1")', 1000);
+      // use this
+      setTimeout(function() {
+        console.log('hello world 2');
+      }, 1000);
+      //- no1
+      //- function addHandler(target, eventType, handler) {
+      //-   if (target.addEventListener) {
+      //-     target.addEventListener(eventType, handler, false);
+
+      //-   } else {
+      //-     target.attachEvent('on' + eventType, handler);
+      //-   }
+      //- }
+
+      //- addHandler(document, 'click', function() {
+      //-   console.log('hello world');
+      //- });
+
+      //- no2
+
+      //- function addHandler(target, eventType, handler) {
+      //-   if (target.addEventListener) {  // DOM2 Events
+      //-     addHandler = function(target, eventType, handler) {
+      //-       target.addEventListener(eventType, handler, false);
+      //-     };
+      //-   } else {  // IE
+      //-     addHandler = function(target, eventType, handler) {
+      //-       target.attachEvent('on' + eventType, handler);
+      //-     };
+      //-   }
+      //-   addHandler(target, eventType, handler);
+      //- }
+
+      //- // 调用
+      //- addHandler(document, 'click', function() {
+      //-   console.log('hello world');
+      //- });
+
+      //- addHandler(window, 'keydown', function() {
+      //-   console.log('key down');
+      //- });
+
+      //- no3
+      var addHandler = document.addEventListener ?
+        function(target, eventType, handler) {
+          target.addEventListener(eventType, handler, false);
+        }:
+        function(target, eventType, handler) {
+          target.attachEvent('on' + eventType, handler);
+        };
+
+      // 调用
+      addHandler(document, 'click', function() {
+        console.log('hello world');
+      });
+
+      addHandler(window, 'keydown', function() {
+        console.log('key down');
+      });
+
+
