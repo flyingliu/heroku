@@ -7,7 +7,43 @@
       li JavaScript 中的内存管理、回收机制；
       li 如何更高效地使用内存，以至于让出产的JavaScript 能更有拓展的活力；
       li 如何在遇到内存问题的时候，进行内存检查。
-
+      each v in [1,2,3,4,5,6]
+        li
+          button.btn= v
+    #output
 
     hr
     a(href="http://lifemap.in/javascript-memory-optimize/") 原文链接地址
+
+script.
+  var btns = document.querySelectorAll('.btn'); // 6 elements
+  var output = document.querySelector('#output');
+  var events = [1, 2, 3, 4, 5, 6];
+
+  // Case 1
+  //- for (var i = 0; i < btns.length; i++) {
+  //-   btns[i].onclick = function(evt) {
+  //-     output.innerText += 'Clicked ' + events[i];
+  //-     console.log(i);
+  //-   };
+  //- }
+
+  // Case 2
+  //- for (var i = 0; i < btns.length; i++) {
+  //-   btns[i].onclick = (function(i) {
+  //-     return function(evt) {
+  //-       output.innerText += 'Clicked ' + events[i];
+  //-       console.log(i);
+  //-     };
+  //-   })(i);
+  //- }
+
+  //- // Case 3
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].onclick = (function(event) {
+      return function(evt) {
+        output.innerText += 'Clicked ' + event;
+        console.log(event);
+      };
+    })(events[i]);
+  }

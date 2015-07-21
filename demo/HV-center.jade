@@ -1,26 +1,153 @@
 link(rel="stylesheet", href="/asset/css/HV-center.css")
 
-.no1
-  .wrap
-    .box no1 Lorem ipsum dolor sit amet, ecusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+.container
+  .row
 
-.no2
-  .wrap
-    .box no2  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+    p 看我如何水平垂直居中。这里有个条件：外框的大小是固定的，内框的宽度是固定的，高度是不固定的！
 
-.no3
-  .wrap
-    .box no3  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+    pre.
+      .wrap {width:400px;height:400px; background:#fff;margin:10px; background:#333; color:#fff;
+        .box { background:pink;width:200px;}
+      }
 
-.no4
-  .wrap
-    .box no4  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+    .no1
+      h3 absolute + margin:auto;
+      .wrap
+        .box no1 Lorem ipsum dolor sit amet, ecusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
 
-.no5
-  .wrap
-    .box no5  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+    h5 scss 代码
+    pre.
+      .no1 {
+        .wrap {position: relative;}
+        .box { position: absolute; margin:auto;top:0;left:0;right:0;bottom:0; display:inline-block; height:200px;}
+      }
 
-.no6
-  .wrap
-    .box no6  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+    p 这个有点坑爹，内框的高度是固定的！
+
+    p w3c.org中有这样一句话：
+
+    blockquote The constraint that determines the used values for these elements is: 'left' + 'margin-left' + 'border-left-width' + 'padding-left' + 'width' + 'padding-right' + 'border-right-width' + 'margin-right' + 'right' = width of containing block
+
+    p 这句话说的是absolute性质的盒子，它的包含块的宽度等于它的盒模型的宽度 + left + right值，包含块的高度同理，盒模型包括margin-box、border-box、padding-box、content-box，而在这个居中方法中，.ele的left + right值是0，width是定值，width所在盒子包括了除了margin-box外的那三个box，margin都是auto值，按照上面那个公式，margin-left + margin-right的值应该等于包含块的宽度 - left的值 - right的值 - width的值，也就是说margin-left + margin-right的值等于除了width所占宽度外的剩下宽度，拥有剩下宽度后，就是平分其宽度，以让左右两边相等，达到居中，标准中给出了答案：
+
+    blockquote If none of the three is 'auto': If both 'margin-left' and 'margin-right' are 'auto', solve the equation under the extra constraint that the two margins get equal values, unless this would make them negative, in which case when direction of the containing block is 'ltr' ('rtl'), set 'margin-left' ('margin-right') to zero and solve for 'margin-right' ('margin-left')
+
+    p 这里的"three"指的是left, width, right。如果left、right和width都不为auto，同时margin-left和margin-right都是auto，除非特别情况，它们俩就是相等的，而这个例子中不在特殊情况之列，因此两者平分，此时达到了水平居中。而对于垂直方向的margin的auto值的计算，标准中也有如下两句话，跟水平方向的同理(这里的“three”指的是“top, height, bottom”)：
+
+    blockquote
+      p the used values of the vertical dimensions must satisfy this constraint: 'top' + 'margin-top' + 'border-top-width' + 'padding-top' + 'height' + 'padding-bottom' + 'border-bottom-width' + 'margin-bottom' + 'bottom' = height of containing block
+      p if none of the three are 'auto': If both 'margin-top' and 'margin-bottom' are 'auto', solve the equation under the extra constraint that the two margins get equal values.
+
+    p 垂直方向也就因此也居中了。
+
+    p 这种方法能简单的做到居中，但是必须有width和height值
+
+    hr
+
+
+
+    .no2
+      h2 我可以计算出来让他居中
+      .wrap
+        .box no2  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss:
+      pre.
+        // 内控弄个margin
+        .no2 {
+          .wrap { overflow:hidden;}
+          .box { height:200px;margin:100px; }
+        }
+        // 外框弄个padding
+        .no2 {
+          .wrap { overflow:hidden;padding:100px;}
+          .box { height:200px; }
+        }
+      p 高级一点的话使用css3的calc函数计算padding或者margin值，都脱离不了计算! 还有必须知道内框和外框的大小，非常不灵活。
+    hr
+
+    .no3
+      h3 text-align:center + absolute
+      .wrap
+        .box no3  voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+
+    h5 scss:
+    pre.
+      .no3 {
+        .wrap { text-align: center; }
+        .box {  position: absolute; display:inline-block; margin-left: -(200px / 2);margin-top: (400px - 200px) / 2; height:200px;}
+      }
+    p 这种方法还是脱离不了计算。适应性不好
+    p 简单解释下，首先，text-align:center作用的是文本而不是absolute的元素，但是，当absolute元素为inline-block的时候，它会受到文本的影响，然后你可能会问这里没文本啊，我只能告诉你说这下面是有的，是个匿名的文本节点。具体的这里不展开，可以参考标准，然后理解这句话:
+
+    blockquote If the inline box contains no glyphs at all, it is considered to contain a strut (an invisible glyph of zero width) with the A and D of the element's first available font
+
+    p 然后这个匿名文本由于受到text-align:center影响居中了，这个时候absolute盒子的左边跟父容器的中点对齐了，所以就还需要往回拉50%，这里用的是margin-left，你也可以用其它方式拉。然后就是垂直方向的对齐，垂直方向是不能被操作文本的属性影响的，所以我这里用的是margin-top来让它偏移下去。
+
+    hr
+
+    .no4
+      h3 translate3d + absolute;
+      .wrap
+        .box no4  Lorem ipsum dolor sit amet assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss
+      pre.
+        .no4 {
+          .wrap { position: relative }
+          .box { position: absolute;top:50%;left:50%;transform : translate3d(-50%, -50%, 0); width:300px;}
+        }
+      p 这种办法无须知道内框宽高度，灵活，也很好理解！
+
+    hr
+
+    .no5
+      h3 IFC布局
+      .wrap
+        .box no5  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss
+      pre.
+        .no5 {
+          .wrap { text-align: center;
+            &:after {content:'';height:100%;width:5px; font-size:0; vertical-align: middle; display:inline-block; }
+          }
+          .box { display:inline-block;vertical-align: middle; }
+        }
+      p 支持IE8+，兼容性和灵活性都比较好。
+    hr
+
+    .no6
+      h3 text-align:center + font-size
+      .wrap
+        .box no6  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss
+      pre.
+        .no6 {
+          .wrap { text-align: center; line-height:400px; vertical-align: middle;}
+          .box { display:inline-block;vertical-align: middle; line-height:24px; }
+        }
+      p 这个必须知道外框的具体高度，且不能使用百分比。
+    hr
+    .no7
+      h3 FFC布局，布局中的战斗机
+      .wrap
+        .box no7  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss
+      pre.
+        .no7 {
+          .wrap { display:flex;}
+          .box { margin:auto; }
+        }
+      p flexbox是个很强大的布局模块，也就三个属性就搞定居中了，而且不论父容器还是居中元素都可以不定宽高。缺点是必须是IE10+以上现代浏览器.
+    hr
+    .no8
+      h3 模拟table布局
+      .wrap
+        .box no8  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ducimus voluptates accusantium aliquid ratione pariatur possimus, voluptatibus nam sequi recusandae id, assumenda sunt aperiam, ab perspiciatis rerum ex labore totam!
+      h5 scss
+      pre.
+        .no8 {
+          .wrap { display:table-cell; vertical-align: middle; text-align: center; }
+          .box { display:inline-block; }
+        }
+      p IE8+以上浏览器支持，不错！
+
 
