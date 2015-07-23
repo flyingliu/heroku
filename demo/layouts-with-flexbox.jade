@@ -1,0 +1,278 @@
+link(rel="stylesheet", href="/asset/css/layouts-with-flexbox.css")
+
+.container
+  .row
+    h1 FLEX弹性布局
+    p FLEX弹性布局是一种强大坚韧的布局方法。打破了我以前对css布局方案的认知。
+    p 本domo 参考了阮一峰的
+      a(href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html") Flex 布局教程：语法篇
+
+.container
+  .row
+    h2 这里会自动平均分配，很智能
+    .grid.grid-1
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, voluptatibus.
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet.  Lorem ipsum dolor.
+    .grid.grid-3
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet.  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti eos excepturi quibusdam voluptatibus repellat porro a dolorem est magni numquam dolorum sunt assumenda, id, repudiandae fugit dignissimos cum facere necessitatibus!
+    h2 这里会自动分配大小，很智能
+    .grid.grid-2
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, voluptatibus.
+      .cell  Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet.  Lorem ipsum dolor.
+
+    h2 按照百分比布局
+    .grid.grid-4
+      .cell.u1of4 这里是25%的宽度 Lorem ipsum dolor sit amet.
+      .cell  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, voluptatibus.  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos debitis sint, repellendus autem numquam distinctio nam ipsam perferendis, ratione consequatur.
+      .cell.u1of4 这里是25%的宽度  Lorem ipsum dolor sit amet.
+
+
+    h2 也可以固定一个容器成员宽度
+    .grid.grid-5
+      .cell.u300 也可以固定一个宽度，比如这里是300px;
+      .cell Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo, voluptatibus.  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos debitis sint, repellendus autem numquam distinctio nam ipsam perferendis, ratione consequatur.
+      .cell 这里是auto的宽度  Lorem ipsum dolor sit amet.
+
+.container
+  .row
+    h3 一个容器成员的排列
+    .col-md-2
+      .box.one-1
+        .item
+    .col-md-2
+      .box.one-2
+        .item
+    .col-md-2
+      .box.one-3
+        .item
+    .col-md-2
+      .box.one-4
+        .item
+    .col-md-2
+      .box.one-5
+        .item
+    .col-md-2
+      .box.one-6
+        .item
+    .col-md-2
+      .box.one-7
+        .item
+    .col-md-2
+      .box.one-8
+        .item
+    .col-md-2
+      .box.one-9
+        .item
+    hr
+  .row
+    h3 两个容器成员的排列
+    .col-md-2
+      .box.two-1
+        .item
+        .item
+    .col-md-2
+      .box.two-2
+        .item
+        .item
+    .col-md-2
+      .box.two-3
+        .item
+        .item
+    .col-md-2
+      .box.two-4
+        .item
+        .item
+    .col-md-2
+      .box.two-5
+        .item
+        .item
+    .col-md-2
+      .box.two-6
+        .item
+        .item
+    .col-md-2
+      .box.two-7
+        .item
+        .item
+    .col-md-2
+      .box.two-8
+        .item
+        .item
+    hr
+  .row
+    h3 三个容器成员的排列
+    .col-md-2
+      .box.three-1
+        .item
+        .item
+        .item
+    hr
+  .row
+    h3 四个容器成员的排列
+    .col-md-2
+      .box.four-1
+        .item
+        .item
+        .item
+        .item
+    .col-md-2
+      .box.four-2
+        .column
+          .item
+          .item
+        .column
+          .item
+          .item
+
+    hr
+  .row
+    h3 五个容器成员的排列
+    .col-md-2
+      .box.five-1
+        .column
+          .item
+          .item
+        .column
+          .item
+        .column
+          .item
+          .item
+
+    hr
+  .row
+    h3 六个容器成员的排列
+    .col-md-2
+      .box.six-1
+        .column
+          .item
+          .item
+          .item
+        .column
+          .item
+          .item
+          .item
+    .col-md-2
+      .box.six-2
+        .column
+          .item
+          .item
+        .column
+          .item
+          .item
+        .column
+          .item
+          .item
+    hr
+  .row
+    h3 七个容器成员的排列
+    .col-md-2
+      .box.seven-1
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+    hr
+  .row
+    h3 八个容器成员的排列
+    .col-md-2
+      .box.eight-1
+        .column
+          .item
+          .item
+          .item
+        .column
+          .item
+          .item
+        .column
+          .item
+          .item
+          .item
+    hr
+  .row
+    h3 九个容器成员的排列
+    .col-md-2
+      .box.nine-1
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+        .item
+
+  .row
+    h3 scss
+    pre.
+      .box {width:152px;height:152px;border-radius:5px; border:1px solid #ccc;margin:10px auto;
+        .item {width:50px;height:50px; background:gray; border-radius:50%;border:5px solid #fff;}
+        &.one-1 { display: flex;}
+        &.one-2 { display: flex;justify-content: center;}
+        &.one-3 { display: flex;justify-content: flex-end;}
+        &.one-4 { display: flex;align-items: center;}
+        &.one-5 { display: flex;align-items: center;justify-content: center;}
+        &.one-6 { display: flex;align-items: center;justify-content: flex-end;}
+        &.one-7 { display: flex;align-items: flex-end;}
+        &.one-8 { display: flex;align-items: flex-end;justify-content: center;}
+        &.one-9 { display: flex;align-items: flex-end;justify-content: flex-end;}
+
+        &.two-1 { display: flex;justify-content: space-between;}
+        &.two-2 { display: flex;flex-direction: column;justify-content: space-between;}
+        &.two-3 { display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
+        &.two-4 { display: flex;flex-direction: column;justify-content: space-between;align-items: flex-end;}
+        &.two-5 { display: flex;justify-content: space-between;align-items: center;}
+        &.two-6 { display: flex;justify-content: space-between;align-items: flex-end;}
+        &.two-7 { display: flex;
+          .item:nth-child(2) { align-self:center; }
+        }
+        &.two-8 { display: flex;justify-content: space-between;
+          .item:nth-child(2) { align-self:center;align-self: flex-end; }
+        }
+
+        &.three-1 { display: flex;
+          .item:nth-child(2) {
+            align-self: center;
+          }
+          .item:nth-child(3) {
+            align-self: flex-end;
+          }
+        }
+
+        &.four-1 { display: flex;flex-wrap: wrap;justify-content:center;align-content: space-between; }
+        &.four-2 { display: flex;flex-wrap: wrap;align-content: space-between;
+          .column { flex-basis: 100%;display: flex;justify-content: space-between;}
+        }
+
+
+        &.five-1 { display: flex;flex-wrap: wrap;align-content: space-between;
+          .column { flex-basis: 100%;display: flex;justify-content: space-between;}
+          .column:nth-child(2) { flex-basis: 100%;display: flex;justify-content:center;}
+        }
+
+        &.six-1 { display: flex;flex-wrap: wrap;align-content: space-between;
+          .column { flex-basis: 100%;display: flex;justify-content: space-between;}
+        }
+        &.six-2 { display: flex;flex-wrap: wrap;align-content: space-between;
+          .column { flex-basis: 100%;display: flex;justify-content: space-between;}
+        }
+
+        &.seven-1 { display: flex;flex-wrap:wrap-reverse;justify-content:center;}
+
+        &.eight-1 { display: flex;flex-wrap:wrap-reverse;justify-content:center;
+          .column { flex-basis: 100%;display: flex;justify-content: space-between;}
+        }
+
+        &.nine-1 { display: flex;flex-wrap:wrap-reverse;justify-content:center;}
+      }
+

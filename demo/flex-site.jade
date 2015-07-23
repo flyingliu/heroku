@@ -1,0 +1,60 @@
+header
+  h1 this is header
+.container.Site-content
+  .row
+
+      h3  Lorem ipsum dolor sit amet, consectetur 
+      p adipisicing elit. Cum fuga aspernatur quod velit sapiente, rerum repellat deleniti, nihil vero sed, perspiciatis saepe nisi adipisci a. Dolorem eligendi veritatis incidunt, ipsum.
+      p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, eveniet aspernatur maiores obcaecati dolore vitae omnis, reiciendis ducimus alias, tempore corrupti praesentium, quibusdam et nisi fugit. Unde aliquid quasi quibusdam praesentium obcaecati error maxime id nam accusamus ut saepe, ad voluptas optio impedit harum vel dolore nostrum, totam in. Nesciunt ratione porro dignissimos voluptate expedita, eius deleniti ex nobis hic, vel sequi, nisi, ea illum cumque accusantium culpa harum. Molestiae autem rerum adipisci nulla id sint earum ipsa tenetur, cupiditate veritatis eligendi nisi voluptas, fuga distinctio blanditiis animi, fugiat aut quia. Ullam a, officiis animi veritatis earum repudiandae pariatur aspernatur.
+      p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, eveniet aspernatur maiores obcaecati dolore vitae omnis, reiciendis ducimus alias, tempore corrupti praesentium, quibusdam et nisi fugit. Unde aliquid quasi quibusdam praesentium obcaecati error maxime id nam accusamus ut saepe, ad voluptas optio impedit harum vel dolore nostrum, totam in. Nesciunt ratione porro dignissimos voluptate expedita, eius deleniti ex nobis hic, vel sequi, nisi, ea illum cumque accusantium culpa harum. Molestiae autem rerum adipisci nulla id sint earum ipsa tenetur, cupiditate veritatis eligendi nisi voluptas, fuga distinctio blanditiis animi, fugiat aut quia. Ullam a, officiis animi veritatis earum repudiandae pariatur aspernatur.
+      p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, eveniet aspernatur maiores obcaecati dolore vitae omnis, reiciendis ducimus alias, tempore corrupti praesentium, quibusdam et nisi fugit. Unde aliquid quasi quibusdam praesentium obcaecati error maxime id nam accusamus ut saepe, ad voluptas optio impedit harum vel dolore nostrum, totam in. Nesciunt ratione porro dignissimos voluptate expedita, eius deleniti ex nobis hic, vel sequi, nisi, ea illum cumque accusantium culpa harum. Molestiae autem rerum adipisci nulla id sint earum ipsa tenetur, cupiditate veritatis eligendi nisi voluptas, fuga distinctio blanditiis animi, fugiat aut quia. Ullam a, officiis animi veritatis earum repudiandae pariatur aspernatur.
+
+footer
+  div.text-center zhe shi yao juzhong xianshi 
+
+style.
+  footer,header { background:black; color:#fff; padding:50px;}
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .Site-content {
+    flex: auto;
+  }
+
+script.
+    /**
+     * 函数节流方法
+     * @param Function fn 延时调用函数
+     * @param Number delay 延迟多长时间
+     * @param Number atleast 至少多长时间触发一次
+     * @return Function 延迟执行的方法
+     */
+    var throttle = function (fn, delay, atleast) {
+        var timer = null;
+        var previous = null;
+
+        return function () {
+            var now = +new Date();
+
+            if ( !previous ) previous = now;
+
+            if ( now - previous > atleast ) {
+                fn();
+                // 重置上一次开始时间为本次结束时间
+                previous = now;
+            } else {
+                clearTimeout(timer);
+                timer = setTimeout(function() {
+                    fn();
+                }, delay);
+            }
+        }
+    };
+
+    window.onresize = throttle(testFn, 200,1000);
+    function testFn () {
+      console.log(1);
+    }

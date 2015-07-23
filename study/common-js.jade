@@ -29,18 +29,51 @@ script.
     return false;
   }
 
-  //label 重复执行的坑
-  var evTimeStamp = 0;
-  function isDbClick(e) {
-    var now = +new Date();
-    if (now - evTimeStamp < 100) {
-      return;
+  /**
+   * 阻止冒泡引发的label内的chackbox、radio双击而导致的错误出现
+   * @param Function fn 事件调用函数
+   */
+  function doubleclick(fn){
+    var evTimeStamp = 0;
+    return function(){
+      var now = +new Date();
+      if (now - evTimeStamp < 100) {
+        return;
+      }
+      fn();
+      evTimeStamp = now;
     }
-    evTimeStamp = now;
-    console.log(evTimeStamp);
-  };
+  }
+
+  /**
+   * 函数节流方法
+   * @param Function fn 延时调用函数
+   * @param Number delay 延迟多长时间
+   * @param Number atleast 至少多长时间触发一次
+   * @return Function 延迟执行的方法
+   */
+  function throttle(fn, delay, atleast) {
+    var timer = null;
+    var previous = null;
+    return function () {
+      var now = +new Date();
+      if ( !previous ) previous = now;
+      if ( now - previous > atleast ) {
+        fn();
+        previous = now;
+      } else {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          fn();
+        }, delay);
+      }
+    }
+  }
+
 
 
   var label = document.querySelectorAll('label')[0]
-  label.onclick = isDbClick;
-  console.log(label);
+  label.onclick = doubleclick(testFn);
+  function testFn(){
+    console.log('---');
+  }
