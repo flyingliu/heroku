@@ -1,0 +1,101 @@
+.container
+  .row
+    h1 javascript 模块化编程
+    p js为什么需要模块化？网页越来越复杂，需要团队分工协作、进度管理、单元测试等等。
+
+    p 这篇学习文章来自阮一峰老师写的
+     a(href="http://www.ruanyifeng.com/blog/2012/10/javascript_module.html")  javascript模块化编程。
+
+    h3 一、原始写法
+    p 我们把所有的函数变量等堆砌在一个文件中。比如：
+    pre.
+      function a() {
+        //do a
+      }
+      function b() {
+        //do b
+      }
+    p 这种做法的缺点就是污染了全局变量。
+
+    h3 二、对象写法
+    p 为了解决全局变量污染，我们可以把相关的函数写到一个对象里。
+    pre.
+      var fn = {
+        _count:0,
+        a : function(){
+          console.log('a');
+        },
+        b : function(){
+          console.log('b');
+        }
+      }
+    p 上面的函数都封装在fn对象里。使用时调用相关方法：
+    pre.
+      fn.a();
+    p 但是，这样的写法会暴露所有的模块成员，内部状态一不小心就被更改了。如：
+    pre.
+      fn._count = 5;
+
+    h3 三、立即执行函数写法
+    p 使用“立即执行函数”（Immediately-Invoked Function Express,IIFE),可以达到不暴露私有成员的目的。
+    pre.
+      var mod1 = (function(){
+        var _count = 0;
+        var a = function(){
+          console.log('a');
+        };
+        var b = function(){
+          console.log('b');
+        };
+        return {
+          a : a,
+          b : b,
+        }
+      })()
+    p 使用上面的写法是无法获取到_count变量的。
+
+    h3 四、放大模式
+    p 如果一个模块很大，必须写成几个部分，或者一个模块继承自另一个模块，这是就需要采取“放大模式”（augmentation）。
+    pre.
+      var mod = {};
+      var mod = (function(mod){
+        mod.s = 5;
+        mod.a = function(){
+          return mod.s;
+        };
+        mod.b = function(s){
+          console.log(s);
+        };
+        return mod;
+      })(mod);
+
+    p 上面的代码为mod模块增加了一个新方法a(),然后返回新的mod模块。这里有两点需要注意：
+    p 1.必须事先定义好mod为一个对象。
+    p 2.使用"return mod"这行能进行链式调用，如:mod.b(mod.a());
+
+    h3 五、宽放大模式（Loose augmentation）
+    p 在浏览器环境中，模块的各个部分通常都是从网上获取的，有时无法知道哪个部分先加载，如果采用上面的做法，第一个执行的部分有可能加载一个不存在的控对象，这时就要采用“宽放大模式”。
+    pre.
+      var mod = (function(mod){
+        mod.a = function(){
+          console.log(1);
+        };
+        return mod;
+      })(window.mod || {});
+    p 与“放大模式”相比，“宽放大模式”就是“立即执行函数”的参数可以是空对象，如上不需要先声明mod为对象。
+
+    h3 六、输入全局变量
+    p 独立性是模块的重要特点，模块内部最好不与程序的其它部分直接交互。
+    p 为了在模块内部调用全局变量，必须显式地将其它变量输入模块。
+    pre.
+      var mod = (function ($, YAHOO) {
+        //...
+      })(jQuery, YAHOO);
+
+    p 上面的mod模块需要使用jQuery库，就把这两个库（其实是两个模块）当作参数输入mod,这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显。
+
+
+
+
+script.
+
