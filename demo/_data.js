@@ -1,0 +1,5 @@
+{
+  "seajs": {
+    "layout": false
+  }
+}

@@ -1,3 +1,11 @@
+html,body {padding:0;margin:0;}
+.row { overflow:hidden;}
+.col-md-2 { float:left; margin:20px;}
+
+* { box-sizing:border-box;}
+
+hr { overflow:hidden;}
+
 .grid { background:#eee;margin:10px 0;display: flex;
   .cell:nth-child(1) { background:#F4EFCC;}
   .cell:nth-child(2) { background:#B4B197;}

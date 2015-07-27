@@ -1,0 +1,123 @@
+.container
+  .row
+    h1 seajs笔记
+    p 详细资料参考
+      a(href="http://seajs.org/docs/#docs") seajs官网
+    p
+      a(href="http://localhost:9000/demo/seajs.html") seajs使用demo
+
+    h3 一、定义模块
+    pre.
+      define(function(require, exports, module) {
+        // define(function(require, exports, module)是 define define(id?, deps?, factory) 的简写形式。
+        // define 也可以接受两个以上参数。字符串 id 表示模块标识，数组 deps 是模块依赖。比如：
+        // define('hello', ['jquery'], function(require, exports, module) {});
+        // id 和 deps 参数可以省略。省略时，可以通过构建工具自动生成。
+        // 此外，即便不合并，保持一个文件一个模块，如果压缩时不提取 id，那么在 IE6-9 下也有可能会出现问题。这是实现上的困难，具体请看源码。如果要确保上线后在 IE 下没问题，请务必要手写或通过工具提取 id。
+        // 相关资料可以查看cmd模块定义规范 https://github.com/seajs/seajs/issues/242
+
+        // 导入依赖文件
+        var $ = require('jquery');
+
+
+        // 创建一个类函数
+        var Moda = function(name) {
+          this.name = name;
+          this.say = function(){
+            console.log('this is ' + this.name);
+          }
+        }
+
+        module.exports = Moda;
+
+        // exports是对module.exports的一个引用，exports一般是用来暴露一些属性和方法，比如 exports.myName = 'flying',或者exports.doing = function(){};
+        // 当需要暴露整个对象时，文档说是应该使用 module.exports = {myName = 'flying',doing:function(){}},这样的，而不是exports = {myName = 'flying',doing:function(){}}
+        // module.exports.doing在实际使用中可以省略前面的module
+        exports.doing = function(){
+          console.log(1);
+        }
+        exports.named = "abc";
+      });
+    h3 二、使用定义好的模块 seajs.use
+    pre.
+      seajs.use('./testsea')
+
+    p 当然也可以在use使用回调函数
+    pre.
+      //第一个参数是模块标识，即要使用模块的路径，这里是t1.js
+      //第二个参数是一个回调函数
+      seajs.use('./js/t1',function(t){
+          t.hi();
+      });
+    h3 三、加载依赖项
+    pre.
+      //名称必须是require，可以理解为一个关键词一样，接收一个参数。这里强调下就是不可以改名，对比requirejs里为一个全局变量，这里是一个类关键字的形参。
+      var $ = require('./jquery');
+    h3 四、向外部提供接口exports
+    pre.
+      define(function(require,exports,module){
+          //exports可以把方法或属性暴露给外部
+          exports.name = 'hi';
+          exports.hi = function(){
+              alert('hello');
+          }
+      });
+    h3 五、当前模块信息module
+    p 这里只介绍几个基本的，具体可以参考https://github.com/seajs/seajs/issues/242
+    ol
+      li module.id 模块标识
+      li module.uri 根据模块系统的路径解析规则得到的模块绝对路径
+      li module.dependencies 表示当前模块的依赖列表，是一个数组
+      li module.status 当前模块的状态，是一个数值
+    p 根据模块系统的路径解析规则得到的模块绝对路径。
+    pre.
+      define(function(require, exports, module) {
+        console.log(module.uri);
+        // ==> http://example.com/path/to/this/file.js
+      });
+    p 一般情况下（没有在 define 中手写 id 参数时），module.id 的值就是 module.uri，两者完全相同。
+
+    h3 六、seajs的配置 seajs.config
+    p 具体可以参考
+      a(href="https://github.com/seajs/seajs/issues/262") https://github.com/seajs/seajs/issues/262！
+    pre.
+      seajs.config({
+
+        // 别名配置
+        alias: {
+          'es5-safe': 'gallery/es5-safe/0.9.3/es5-safe',
+          'json': 'gallery/json/1.0.2/json',
+          'jquery': 'jquery/jquery/1.10.1/jquery'
+        },
+
+        // 路径配置
+        paths: {
+          'gallery': 'https://a.alipayobjects.com/gallery'
+        },
+
+        // 变量配置
+        vars: {
+          'locale': 'zh-cn'
+        },
+
+        // 映射配置
+        map: [
+          ['http://example.com/js/app/', 'http://localhost/js/app/']
+        ],
+
+        // 预加载项 seajs3以下支持
+        preload: [
+          Function.prototype.bind ? '' : 'es5-safe',
+          this.JSON ? '' : 'json'
+        ],
+
+        // 调试模式
+        debug: true,
+
+        // Sea.js 的基础路径
+        base: 'http://example.com/path/to/base/',
+
+        // 文件编码
+        charset: 'utf-8'
+      });
+
