@@ -1,0 +1,69 @@
+.container
+  .row
+    h1 js的this四种调用模式
+    p 在javascript中一共有四种调用模式：方法调用模式，函数调用模式，构造器调用模式，apply调用模式
+    h3 一、函数调用
+    p 这是函数的最通常用法，属于全局性调用，此时this就代表全局对象window(global).
+    pre.
+      function text() {
+        this.x = 1;
+        console.log(this.x);
+      }
+
+      text();  // 1
+
+    h3 二、作为对象方法调用
+    p 函数还可以作为某个对象的方法调用，这是this就指这个上级对象。
+    pre.
+      function test() {
+        console.log(this.x);
+      }
+
+      var o = {};
+      o.x = 1;
+      o.m = test;
+      o.m(); // 1
+
+    h3 三、作为构造函数调用
+    p 构造函数就是通过这个函数生成一个新对象。这是，this就指这个新对象。
+    pre.
+      function test() {
+        this.x = 1;
+      }
+
+      var o = new test();
+      console.log(o.x);
+
+    h3 四、apply调用
+    p apply()是函数对象的一个方法，他的作用就是改变函数的调用对象，他的第一个参数就表示改变后的调用这个函数的对象。因此，this指的就是这第一个参数。
+    pre.
+      var x = 0;
+      function test() {
+        console.log(this.x);
+      }
+
+      var o = {};
+      o.x = 1;
+      o.m = test;
+      o.m.apply();  // 0
+      o.m.apply(o); // 1
+
+    p apply()的参数为空时，默认调用全局对象。因此，这时的运行结果为0,证明this指的是全局对象。
+    p 如果把apply(o)指向这个o，证明了这时this代表的对象是o;
+
+
+
+
+
+script.
+  var x = 0;
+  function test() {
+    console.log(this.x);
+  }
+
+  var o = {};
+  o.x = 1;
+  o.m = test;
+  o.m.apply(o);
+
+
