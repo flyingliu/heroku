@@ -5,7 +5,15 @@
         label(for="input")
           input#input(type="checkbox")
           span 点击这里试试看
-
+    .col-md-12
+      hr
+      button.btn.btn-info.iambutton 我是按钮！
+      hr
+      button.btn.btn-info.iambutton 我是按钮！
+      hr
+      button.btn.btn-info.iambutton 我是按钮！
+      hr
+      button.btn.btn-info.iambutton 我是按钮！
 
 script.
   //是否存在指定函数 
@@ -83,6 +91,35 @@ script.
     }
   }
 
+  /**
+   * [元素事件监听]
+   * @param {[type]}   element [监听元素]
+   * @param {[type]}   type    [监听事件类型]
+   * @param {Function} fn      [事件驱动]
+   * 内联事件 (Inline Events, 即 HTML 中的 onclick="" 属性 和 element.onclick)会转化为元素的属性，当指定多个的内联事件时，它之前所指定的内联事件会被覆盖掉。
+   */
+  function addEvent(element,type,fn) {
+    if(document.addEventListener){
+      return element.addEventListener(type,fn,false);
+    } else {
+      return element.attachEvent('on'+type,fn);
+    }
+  }
+
+  /**
+   * 阻止事件冒泡
+   * @param  {[type]} e [description]
+   * @return {[type]}   [description]
+   */
+  function stopPropagation(e) {
+    e = e || window.event;
+    if(e.stopPropagation) { //W3C阻止冒泡方法
+      e.stopPropagation();
+    } else {
+      e.cancelBubble = true; //IE阻止冒泡方法
+    }
+  }
+
 
 
   var label = document.querySelectorAll('label')[0]
@@ -90,6 +127,9 @@ script.
   function testFn(){
     console.log('---');
   }
+
+
+
 
   var node = $('.row')[0];
   var w = getStyle(node,'backgroundColor');
