@@ -1,0 +1,62 @@
+.container
+  .row
+    h1 fis3的一些配置
+    p 百度fis对于前端的一些自动化操作确实是强大的。以前一直用harpjs来做静态服务器，对于sass、jade等优化也是做的挺好，但是就是配置少了些。
+    p fis3的一些常用配置备份下，尽可能的模拟出harpjs运行环境
+    p 运行sass,jade等。
+
+    pre.
+      //npm install -g fis-parser-sass
+      fis.match('*.scss', {
+        rExt: '.css', // from .scss to .css
+        parser: fis.plugin('sass', {
+          //fis-parser-sass option
+        })
+      });
+
+      //npm install -g fis-parser-jade
+      fis.match('*.jade', {
+        rExt: '.html',
+        parser: fis.plugin('jade', {
+          //fis-parser-jade option
+        })
+      });
+
+    h3 js模块化，以mod.js为例子
+    pre.
+      // npm install [-g] fis3-hook-module
+      fis.hook('module', {
+          mode: 'commonJs'  // requirejs加载器设置值为 'amd'
+      });
+      fis.match('/mod/*.js', {
+          isMod: true, // 指明模块文件，组件建议都是匿名方式 define
+          release: '/static/$0'
+      });
+      fis.match('::package', {
+          // npm install [-g] fis3-postpackager-loader
+          // 分析 __RESOURCE_MAP__ 结构，来解决资源加载问题
+          postpackager: fis.plugin('loader', {
+              resourceType: 'commonJs',
+              useInlineMap: true // 资源映射表内嵌
+          })
+      })
+
+    h3 文件压缩与合并
+    pre.
+      fis.match('::packager', {
+        postpackager: fis.plugin('loader', {
+          allInOne: true
+        })
+      });
+
+      fis.match('*.{css,scss}', {
+        optimizer: fis.plugin('clean-css')
+      });
+
+
+      fis.match('*.js', {
+        optimizer: fis.plugin('uglify-js')
+      });
+
+
+

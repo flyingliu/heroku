@@ -1,0 +1,188 @@
+.container
+  .row
+    h1 js中的call、apply、bind方法
+
+    h3 方法定义
+    p call方法
+    p 语法 call([thisObj[,arg1[, arg2[,   [,.argN]]]]])；
+    p 定义：对象方法，以另一个对象替换当前对象。
+    p apply方法
+    p 语法 apply([thisObj[,argArray]])；
+    p 定义：对象方法，以另一个对象替换当前对象。同call方法，区别在于传过来的参数为数组。
+    p 说明： 
+    p 如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。 
+    p 如果没有提供 argArray 和 thisObj 任何一个参数，那么 Global 对象将被用作 thisObj， 并且无法被传递任何参数。
+
+    pre.
+      function add(a,b){
+        return a+b;
+      }
+
+      function sub(a,b){
+        return a-b;
+      }
+
+      var sum = add.apply(sub,1,3);
+      //  var sum = add.apply(sub,[1,3]);
+      console.log(sum); // 4
+    p 这个例子中的意思就是用 add 来替换 sub，add.call(sub,3,1) == add(3,1) ，所以运行结果为：4; // 注意：js 中的函数其实是对象，函数名是对 Function 对象的引用。
+
+    pre.
+      function Animal(){
+        this.name = "Animal";
+        this.showName = function(){
+          alert(this.name);
+        }
+      }
+
+      function Cat(){
+          this.name = "Cat";
+      }
+      var animal = new Animal();
+      var cat = new Cat();
+      animal.showName.call(cat);
+      //- animal.showName.apply(cat,[]);
+
+    p 通过call或apply方法，将原本属于Animal对象的showName()方法交给对象cat来使用了。
+    p 输入结果为 Cat
+    p animal.showName.call(cat,",");
+    p animal.showName.apply(cat,[]);
+    p call 的意思是把 animal 的方法放到cat上执行，原来cat是没有showName() 方法，现在是把animal 的showName()方法放到 cat上来执行，所以this.name 应该是 Cat。此时的this指向call/apply的第一个参数cat;
+
+    h3 实现继承
+    pre.
+      function Animal(name){
+        this.name = name;
+        this.showName = function(){
+          alert(this.name);
+        }
+      }
+
+      function Cat(name){
+        Animal.call(this, name);
+      }
+
+      var cat = new Cat("Black Cat");
+      cat.showName();
+
+    p Animal.call(this) 的意思就是使用 Animal对象代替this(Cat)对象，那么 Cat中不就有Animal的所有属性和方法了吗，Cat对象就能够直接调用Animal的方法以及属性了.
+
+    h3 多重继承
+    pre.
+      function ClassA() {
+        this.showA = function (){
+          console.log("this is show A");
+        }
+      }
+      function ClassB() {
+        this.showB = function (){
+          console.log('this is show B');
+        }
+      }
+
+      function ClassC() {
+        ClassA.call(this);
+        ClassB.call(this);
+      }
+      var c = new ClassC();
+      c.showA();
+      c.showB();
+    p 很简单，使用两个 call 就实现多重继承了当然，js的继承还有其他方法，例如使用原型链，这个不属于本文的范畴，只是在此说明call 的用法。说了call ，当然还有 apply，这两个方法基本上是一个意思，区别在于 call 的第二个参数可以是任意类型，而apply的第二个参数必须是数组，也可以是arguments。代码如下：
+
+    pre.
+      var func=new function(){this.a="func"}
+      var myfunc=function(x,y){
+        var a="myfunc";
+        alert(this.a);
+        console.log(x + y);
+      }
+      myfunc.call(func,"var"," fun");// "func" "var fun"
+      myfunc.apply(func,["var"," fun"]);// "func" "var fun"
+
+    h3 bind
+    p 在EcmaScript5中扩展了叫bind的方法（IE6,7,8不支持），使用方法如下
+    pre.
+      function T(c) {
+        this.id = "Object";
+        this.dom = document.getElementById("scroll");
+      }
+      T.prototype = {
+        init: function() {
+          //①
+          this.dom.onmouseover = function() {
+            console.log("Over-->"+this.id);
+          }
+          //②
+          this.dom.onmouseout = function() {
+            console.log("Out -->"+this.id);
+          } .bind(this)
+        }
+      };
+      (new T()).init();
+      // Over--> scroll
+      // Out --> Object
+
+    p 通过①和②的对照加上显示的结果就会看出bind的作用：改变了上下文的this。bind与call很相似,，例如，可接受的参数都分为两部分，且第一个参数都是作为执行时函数上下文中的this的对象。
+
+    h3 bind与call的区别
+    p 一、bind的返回值是函数,call返回的立即执行函数
+    pre.
+      function func(name,id) {
+          console.log(name,id,this);
+      }
+      var obj = "Look here";
+      func("    ","-->");                       //                             --> Window
+      var a = func.bind(obj, "bind", "-->");
+      a();                                      //返回函数，需要执行      bind --> String
+      var b = func.call(obj, "bind", "-->");    //返回立即立即执行函数    bind --> String
+    p 二、后面的参数也是有区别的
+    pre.
+      function f(a,b,c){
+        console.log(a,b,c);
+      }
+
+      var f_Extend = f.bind(null,"extend_A");
+      f_Extend()              //extend_A undefined undefined
+      f_Extend("A","B","C");  //extend_A A B
+      f_Extend("A","B");      //extend_A A B
+      f.call(null,"extend_A") ///extend_A undefined undefined
+
+    p call 是 把第二个及以后的参数作为f方法的实参传进去,而bind 虽说也是获取第二个及以后的参数用于之后方法的执行，但是f_Extend中传入的实参则是在bind中传入参数的基础上往后排的。
+
+    pre.
+      var f_Extend = f.bind(null,"extend_A")
+
+    p 上面一句相当于：
+    pre.
+      var f_Extend = function(b,c){
+        return f.call(null,"extend_A",b,c);
+      }
+    h3 对bind方法做兼容处理
+    pre.
+      if (!Function.prototype.bind) {
+        Function.prototype.bind = function(obj) {
+          var _self = this;
+          var args = arguments;
+          return function() {
+            _self.apply(obj, Array.prototype.slice.call(args, 1));
+          }
+        }
+      }
+
+    h3 关于 Array.prototype.slice.call
+    p 作用就是：将类似数组的对象转换为真实的数组。
+    p 真实数组具有slice方法，可以对数组进行浅复制（不影响原数组），返回的依然是数组。
+    p 类似数组虽然有length属性，可以使用for循环遍历，却不能直接使用slice方法，会报错！但是通过Array.prototype.slice.call则不会报错，本身（类似数组）被从头到尾slice复制了一遍——变成了真实数组！
+
+
+
+script.
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function(obj) {
+      var _self = this;
+      var args = arguments;
+      return function() {
+        _self.apply(obj, Array.prototype.slice.call(args, 1));
+      }
+    }
+  }
