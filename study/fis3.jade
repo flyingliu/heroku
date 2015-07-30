@@ -76,3 +76,15 @@
       @import url('demo.css?__inline');
     p 这个会和sass文件中引入scss文件一样。在html这css中文件后缀加上?__inline会将图片文件转化为base64字符串。
 
+    h3 Tips
+    p 最近es6好像开始火起来了。在fis上试着装了一个es6转es5插件。
+    pre.
+      //npm install -g fis-parser-es6-babel
+      fis.set('project.fileType.text', 'es6');
+      fis.match('*.es6', {
+          rExt: '.js',
+          parser: fis.plugin('es6-babel', {})
+      });
+    p 一个小问题就是Sublime3无法为.es6的文件语法高亮，其实很简单：
+    p 打开文件后点击右下角的Plain Text，在出现的文件格式中选择open all with current extension as…  -&gt;"需要显示的语法类型"。这样以后打开这个类型的文件就会自动进行语法高亮了。
+
