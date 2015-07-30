@@ -58,5 +58,21 @@
         optimizer: fis.plugin('uglify-js')
       });
 
+    hr
+    h3 关于jade编译出来后无法正常解析js模块，和文件正常合并等问题
+    p 我用jade编译出来的文件同原生html文件还是有差距的。
+    ul
+      li 无法用上面方法合并压缩文件
+      li js模块不能正确打包，模块化js文件没有正常加载依赖的js文件。
 
+    p 上面的问题折腾了我很久，下载了若干插件还是不行。后来找到了一个解决办法。
+
+    h3 Fis中嵌入资源
+    p 嵌入资源能解决上面jade的问题。可以在html文件中切入一个jade文件。
+    pre.
+      &lt;link rel="import" href="a.jade?__inline"&gt;
+    p 依照这个原理，其实模块化很容易实现。如上a.jade中可以引入相关的css,js文件。当然在css中也可引入css文件。
+    pre.
+      @import url('demo.css?__inline');
+    p 这个会和sass文件中引入scss文件一样。在html这css中文件后缀加上?__inline会将图片文件转化为base64字符串。
 
