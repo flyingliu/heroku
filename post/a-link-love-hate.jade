@@ -1,0 +1,31 @@
+.container
+  .row
+    h1 关于a标签的一些怪异表现
+    div
+      ul
+        li
+          a(href="#") 这是一个连接
+        li
+          a(href="#") 这是一个连接
+        li
+          a.btn(href="#") 这是一个连接
+        li
+          a.btn(href="/post/column-three-auto-layout.html") 这是一个连接
+    p 我看过一些LoVe/HAte [a:link----->a:visited------>a:hover-------->a:active] 之类继承关系，但是当我点击A连接后还是会现在下划线。这就奇怪了。
+    p 当我鼠标点击其它区域下划线就消失了，这看起来像是一个焦点样式，我给a连接加一个焦点样式，下划线还真不见了。
+
+    pre.
+      a { text-decoration:none; color:}
+      a:hover { text-decoration:none;}
+      a:focus { text-decoration:none;}
+      a.btn { display:inline-block; padding:10px 20px; background:red;color:#fff;}
+      a.btn:hover { display:inline-block; padding:10px 20px; background:red;color:#fff;}
+      ul li {padding:10px 0;}
+
+style.
+  a { text-decoration:none; color:}
+  a:hover { text-decoration:none;}
+  a:focus { text-decoration:none;}
+  a.btn { display:inline-block; padding:10px 20px; background:red;color:#fff;}
+  a.btn:hover { display:inline-block; padding:10px 20px; background:red;color:#fff;}
+  ul > li {padding:10px 0;}
