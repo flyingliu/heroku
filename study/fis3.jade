@@ -17,10 +17,12 @@
       //npm install -g fis-parser-jade
       fis.match('*.jade', {
         rExt: '.html',
+        loaderLang: 'html',
         parser: fis.plugin('jade', {
-          //fis-parser-jade option
+          pretty  : true
         })
       });
+
 
     h3 js模块化，以mod.js为例子
     pre.
@@ -66,6 +68,21 @@
       li js模块不能正确打包，模块化js文件没有正常加载依赖的js文件。
 
     p 上面的问题折腾了我很久，下载了若干插件还是不行。后来找到了一个解决办法。
+
+    h3 fis大牛给出帮助信息了，就是关于 fis3-postpackager-loader 插件
+    p 静态资源前端加载器，用来分析页面中使用的和依赖的资源（js或css）, 并将这些资源做一定的优化后插入页面中。如把零散的文件合并。
+
+    p
+      strong 注意:此插件做前端硬加载，适用于纯前端项目，不适用有后端 loader 的项目。因为不识别模板语言，对于资源的分析和收集，比较的粗暴！！！
+    p 默认 loader 只会以 html 的方式处理后缀为 .html 的文件，如果希望其他后缀也以 html 的方式去处理，请设置 loaderLang 属性。
+    pre.
+      fis.match('*.md', {
+        loaderLang: 'html'
+      });
+
+    hr
+    p
+      a(href="https://github.com/fex-team/fis3-postpackager-loader") fis3-postpackager-loader 参考文档
 
     h3 Fis中嵌入资源
     p 嵌入资源能解决上面jade的问题。可以在html文件中切入一个jade文件。
