@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title Document
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    style.
+      html,body {  padding:0;margin:0; background:pink;}
+      body {font:.2rem/1.5 arial;}
+      h1 { font:.2rem/2 arial;}
+      h3 { font:.2rem/2 arial;}
+      h4 {  font:20px/2 arial;}
+      pre { overflow:hidden;}
+    script.
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            docEl.style.fontSize = 100 * (clientWidth / 1280) + 'px';
+          };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+  body
+    //- h1 用rem做手机适配
+    p 我们拿到的设计稿是640宽度的。那我们用到的尺寸只要把px换成rem，再除以100就可以了，无需计算，和普通的px单位一样方便。而且保证了在所有的浏览器下基本都比较统一的体验。自从用了rem，我再也离不开了。
+    hr
+    pre.
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            docEl.style.fontSize = 100 * (clientWidth / 1280) + 'px';
+          };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+
+    h3 用rem做pc机适配
+    h4 这是20px的字体
+    p 我们也可以做pc机器上适配，当然不支持rem单位的就没有办法了。加入我们拿到的设计稿件是1280。那么依照上面的计算方法我们的宽度是12.8rem。
+    p 1rem = 100px; 12.8*100=1280px;
+    pre.
+      (function (doc, win) {
+        var docEl = doc.documentElement,
+          resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+          recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            docEl.style.fontSize = 100 * (clientWidth / 1280) + 'px';
+          };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+      })(document, window);
+
+
+
+
