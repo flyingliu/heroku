@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title Document
+    script(src="/asset/js/require.js")
+    script.
+      require.config({
+        baseUrl:'/asset/js',
+        paths: {
+          "jquery": 'jquery'
+        },
+        shim:{
+          'underscore': {
+            exports: '_'
+          },
+          'backbone': {
+            deps: ['underscore'],
+            exports: 'Backbone'
+          }
+        }
+      });
+      require(['BaseRouter'],function(baseRouter){
+        baseRouter.youc()
+      });
+  body
+  

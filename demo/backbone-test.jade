@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title backbone-test
+    script(src="/asset/js/jquery.js")
+    script(src="/asset/js/underscore.js")
+    script(src="/asset/js/backbone.js")
+    script.
+      //extend接收的第一个参数是json格式的字符串，用来扩展实例方法
+      //第二个参数也是json格式的字符串，用来扩展静态方法
+      //- var M = Backbone.Model.extend({
+      //-     abc : function(){   //实例方法
+      //-         alert("hello backbone");
+      //-     }
+      //- },{
+      //-     def : function(){ //静态方法
+      //-         alert("hi");
+      //-     }
+      //- });
+      //继承
+      //- var Mod = Backbone.Model.extend({
+      //-     abc : function(){
+      //-         alert(123);
+      //-     }
+      //- });
+
+      //- var ChildMod = Mod.extend();
+
+      //- var model = new ChildMod;
+      //- model.abc();//子类继承了父类的方法
+
+      //- var model = new M;
+      //- model.abc();//实例方法要用实例对象来访问
+      //- M.def();//静态方法直接挂载到了构造函数上，可以通过构造函数来直接访问
+        //自定义事件
+        //- var Mod = Backbone.Model.extend({
+        //-   defaults : {
+        //-     name : 'trigkit4'
+        //-   },
+        //-   initialize: function(){  //初始化构造函数
+        //-     this.on('change',function(){    //绑定change事件，当数据改变时执行此回调函数
+        //-       alert(123);
+        //-     });
+        //-   }
+        //- });
+
+        //- var model = new Mod;
+        //- model.set('name' ,'backbone');//修改默认的name属性值为backbone，此时数据被改变，弹出123
+
+        //自定义事件
+        //- var Mod = Backbone.Model.extend({
+        //-   defaults : {
+        //-     name : 'trigkit4',
+        //-     age : 21
+        //-   },
+        //-   initialize : function(){  //初始化构造函数
+        //-     this.on('change:age',function(){    //绑定change事件，当数据改变时执行此回调函数
+        //-       alert(123);
+        //-     });
+        //-   }
+        //- });
+
+        //- var model = new Mod;
+        //- model.set('age' ,'12');//修改默认的name属性值为backbone，此时数据被改变，弹出123
+
+
+        var Mod = Backbone.Model.extend({
+            defaults : {
+                name : 'trigkit4'
+            }
+        });
+        var V = Backbone.View.extend({
+            initialize : function(){
+              console.log(1);
+              this.listenTo(this.model,'change',this.show);//listenTo比on多了个参数
+            },
+            show : function(model){
+              $(function(){
+                $('body').append('<div>123' + model.get('name') + '</div>');
+              });
+
+
+            }
+        });
+
+        var m = new Mod;
+        var v = new V({model:m});//model指定创建的模型对象m,即前面的路由，哈希值的对应
+        m.set('name','hello');//对模型进行就改时，触发事件，页面也就更新了
+
+
+
+  body
+
+    p
+      a(href="http://segmentfault.com/a/1190000002386651") 本文实例地址
