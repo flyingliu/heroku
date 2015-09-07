@@ -1,0 +1,19 @@
+link(rel="stylesheet", href="/asset/css/empty.css")
+.container
+  .row
+    h1 关于:empty伪类选择符
+
+    hr
+    p empty伪类选择符一般在哪些场景下使用呢。
+
+    h5 一，用div等元素模拟表单元素时，可以用empty元素模拟出placeholder的效果.
+
+    div.edit(contenteditable="true")
+
+    h5 二，表单元素选择。
+    p
+      input.input(placeholder="this is a work")
+    p
+      input.input(placeholder="this is a work" value="")
+    p
+      input.input(placeholder="this is a work" value="世界大同")

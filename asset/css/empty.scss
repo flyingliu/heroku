@@ -1,0 +1,13 @@
+$c:#900;
+.edit {padding:10px;}
+.edit:empty {background:pink;
+  &:before { content:'这里是转悠内容';}
+}
+
+.input{
+  &:empty { background:pink;}
+}
+
+.input[value='']{
+  background:#ccc;
+}
