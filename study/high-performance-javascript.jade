@@ -146,43 +146,6 @@
       setTimeout(function() {
         console.log('hello world 2');
       }, 1000);
-      //- no1
-      //- function addHandler(target, eventType, handler) {
-      //-   if (target.addEventListener) {
-      //-     target.addEventListener(eventType, handler, false);
-
-      //-   } else {
-      //-     target.attachEvent('on' + eventType, handler);
-      //-   }
-      //- }
-
-      //- addHandler(document, 'click', function() {
-      //-   console.log('hello world');
-      //- });
-
-      //- no2
-
-      //- function addHandler(target, eventType, handler) {
-      //-   if (target.addEventListener) {  // DOM2 Events
-      //-     addHandler = function(target, eventType, handler) {
-      //-       target.addEventListener(eventType, handler, false);
-      //-     };
-      //-   } else {  // IE
-      //-     addHandler = function(target, eventType, handler) {
-      //-       target.attachEvent('on' + eventType, handler);
-      //-     };
-      //-   }
-      //-   addHandler(target, eventType, handler);
-      //- }
-
-      //- // 调用
-      //- addHandler(document, 'click', function() {
-      //-   console.log('hello world');
-      //- });
-
-      //- addHandler(window, 'keydown', function() {
-      //-   console.log('key down');
-      //- });
 
       //- no3
       var addHandler = document.addEventListener ?
